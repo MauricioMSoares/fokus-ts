@@ -33,8 +33,14 @@ const selectTask = (state: ApplicationState, task: Task): ApplicationState => {
     }
 }
 
+const addTask = (state: ApplicationState, task: Task): ApplicationState => {
+    return {
+        ...state,
+        tasks: [...state.tasks, task]
+    }
+}
+
 const updateUI = () => {
-    const ulTasks = document.querySelector('.app__section-task-list')
     const taskIconSvg = `
         <svg class="app__section-task-icon-status" width="24" height="24" viewBox="0 0 24 24"
             fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -44,6 +50,28 @@ const updateUI = () => {
                 fill="#01080E" />
         </svg>
     `
+    const ulTasks = document.querySelector('.app__section-task-list')
+    const formAddTask = document.querySelector<HTMLFormElement>('.app__form-add-task')
+    const btnAddTask = document.querySelector<HTMLButtonElement>('.app__button--add-task')
+    const textArea = document.querySelector<HTMLTextAreaElement>('.app__form-textarea')
+
+    if (!btnAddTask) {
+        throw Error("Element btnAddTask not found.")
+    }
+
+    btnAddTask.onclick = () => {
+        formAddTask?.classList.toggle('hidden')
+    }
+
+    formAddTask!.onsubmit = (event) => {
+        event.preventDefault()
+        const description = textArea!.value
+        initialState = addTask(initialState, {
+            description,
+            isConcluded: false
+        })
+        updateUI()
+    }
 
     if (ulTasks) {
         ulTasks.innerHTML = ''
@@ -76,6 +104,11 @@ const updateUI = () => {
         li.appendChild(svgIcon)
         li.appendChild(paragraph)
         li.appendChild(button)
+
+        li.addEventListener('click', () => {
+            initialState = selectTask(initialState, task)
+            updateUI()
+        })
 
         ulTasks?.appendChild(li)
     })

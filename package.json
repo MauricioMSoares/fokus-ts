@@ -19,5 +19,8 @@
   "homepage": "https://github.com/MauricioMSoares/fokus-ts#readme",
   "dependencies": {
     "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.3"
   }
 }
