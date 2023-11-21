@@ -113,3 +113,12 @@ const updateUI = () => {
         ulTasks?.appendChild(li)
     })
 }
+
+document.addEventListener('TarefaFinalizada', () => {
+    if (initialState.selectedTask) {
+        initialState.selectedTask.isConcluded = true
+        updateUI()
+    }
+})
+
+updateUI()
